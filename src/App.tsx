@@ -3,40 +3,39 @@ import { GridCell } from "./types/grid-cell.type";
 import GridCard from "./components/grid-card.component";
 import produce from "immer";
 import classNames from "classnames";
+import { shuffleArray } from "./util/shuffle-array";
 
 function createGrid(): GridCell[][] {
-  return [
-    [
-      { value: 1, solved: false },
-      { value: 6, solved: false },
-      { value: 2, solved: false },
-      { value: 5, solved: false },
-    ],
-    [
-      { value: 3, solved: false },
-      { value: 4, solved: false },
-      { value: 0, solved: false },
-      { value: 4, solved: false },
-    ],
-    [
-      { value: 2, solved: false },
-      { value: 7, solved: false },
-      { value: 1, solved: false },
-      { value: 0, solved: false },
-    ],
-    [
-      { value: 6, solved: false },
-      { value: 3, solved: false },
-      { value: 7, solved: false },
-      { value: 5, solved: false },
-    ],
-  ];
+  // Make 4x4 array of { value: -1, solved: false }.
+  const grid: GridCell[][] = Array.from({ length: 4 }, () =>
+    Array.from({ length: 4 }, () => ({ value: -1, solved: false }))
+  );
+  // Get list of indices from 0 to 15, then shuffle them.
+  const indices = Array.from(Array(16).keys());
+  shuffleArray(indices);
+
+  for (let i = 0; i <= 7; i++) {
+    // Go over each pair of indices
+    const index0 = indices.pop() ?? 0;
+    const index1 = indices.pop() ?? 0;
+    // Convert from 1d index (0 to 15) to 2d index ([0][0] to [3][3])
+    // By getting the modulo and int division (by 4) of the 1d index.
+    const n00 = index0 % 4;
+    const n01 = Math.floor(index0 / 4);
+    const n10 = index1 % 4;
+    const n11 = Math.floor(index1 / 4);
+    // Value of both cells
+    grid[n00][n01].value = i;
+    grid[n10][n11].value = i;
+  }
+
+  return grid;
 }
 
 type GridPosition = { row: number; col: number };
 
 export default function App() {
-  const [grid, setGrid] = useState(createGrid());
+  const [grid, setGrid] = useState(() => createGrid());
   const [flippedCard1, setFlippedCard1] = useState<GridPosition>();
   const [flippedCard2, setFlippedCard2] = useState<GridPosition>();
   const [wrongCardsFlipped, setWrongCardsFlipped] = useState(false);
@@ -83,7 +82,7 @@ export default function App() {
     grid.flatMap((r) => r).reduce((acc, cur) => acc && cur.solved, true);
 
   const resetGame = () => {
-    setGrid(createGrid());
+    setGrid(() => createGrid());
     setFlippedCard1(undefined);
     setFlippedCard2(undefined);
     setWrongCardsFlipped(false);

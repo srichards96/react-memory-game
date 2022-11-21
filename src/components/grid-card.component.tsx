@@ -18,7 +18,7 @@ export default function GridCard({
     <button
       className={classNames(
         "bg-white bg-opacity-10 border-2 md:border-4 border-white border-opacity-10 rounded",
-        "aspect-square inline-flex items-center justify-center text-white",
+        "aspect-square inline-flex items-center justify-center text-white select-none",
         "transition-colors",
         {
           "border-opacity-100": flipped || solved,
