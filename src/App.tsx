@@ -79,6 +79,9 @@ export default function App() {
     (flippedCard1?.row === row && flippedCard1.col === col) ||
     (flippedCard2?.row === row && flippedCard2.col === col);
 
+  const isGameWon = () =>
+    grid.flatMap((r) => r).reduce((acc, cur) => acc && cur.solved, true);
+
   const resetGame = () => {
     setGrid(createGrid());
     setFlippedCard1(undefined);
@@ -117,6 +120,19 @@ export default function App() {
           </button>
         </div>
       </main>
+
+      {isGameWon() && (
+        <div
+          onClick={resetGame}
+          className={classNames(
+            "fixed top-0 left-0 w-screen h-screen transition-colors bg-black bg-opacity-30",
+            "text-center flex flex-col gap-4 items-center pt-[10%] md:pt-0 md:justify-center cursor-pointer select-none"
+          )}
+        >
+          <h1 className="text-8xl text-white">You Won!</h1>
+          <p className="text-4xl text-white">Tap to Reset</p>
+        </div>
+      )}
     </div>
   );
 }
