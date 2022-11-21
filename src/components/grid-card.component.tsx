@@ -1,6 +1,7 @@
 import type { GridCell } from "../types/grid-cell.type";
 
 type Props = GridCell & {
+  flipped: boolean;
   setFlippedFn: () => void;
 };
 
