@@ -29,7 +29,9 @@ export default function GridCard({
       )}
       onClick={setFlippedFn}
     >
-      <h2 className="text-4xl font-bold">{solved || flipped ? value : ""}</h2>
+      <h2 className="text-xl sm:text-2xl md:text-4xl font-bold">
+        {solved || flipped ? value : ""}
+      </h2>
     </button>
   );
 }
