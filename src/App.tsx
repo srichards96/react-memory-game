@@ -100,7 +100,7 @@ export default function App() {
   ]);
 
   return (
-    <div className="h-screen bg-gray-900">
+    <div className="min-h-screen bg-gray-900">
       <main className="max-w-[800px] mx-auto p-4">
         <h1 className="text-4xl md:text-6xl font-bold text-center text-white mb-4">
           Memory Game
